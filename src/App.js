@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {BrowserRouter , Route,  Link } from "react-router-dom";
+import {BrowserRouter as Router, Switch,  Route,  Link } from "react-router-dom";
 import axios from 'axios'
 import * as yup from 'yup'
 import styled from 'styled-components'
@@ -92,16 +92,16 @@ const initialFormValues = {
 const formSchema = yup.object().shape({
   name: yup
         .string()
-        .min(3, 'Name must have at least 3 character in length')
+        .min(3, 'Name must have at least 3 character in length!!')
         .required('Name is required'),
   pizzaSize: yup
     .string()
     // .matches(/(Large|Medium|Small)/, 'either Large or Medium or Small ')
-    .required('Please Select One'),
+    .required('Please Select One!!'),
     specialInstruction: yup
       .string()
-      .min(3, 'special Instruction must have at least 3 character in length')
-      // .required('special Instruction is required'),
+      .min(3, 'Special Instruction must have at least 3 character in length!!')
+      .required('special Instruction is required'),
 })
 
 const App = () => {
@@ -208,42 +208,45 @@ const onCheckboxChange = (event) => {
 
   return (
     <MainContainer>
-      <Navigation>
-        <h2 className = 'lambda'> LAMBDA EATS</h2> 
-        <NavBar>
-          <span>Home</span> <span>Order</span>
-        </NavBar>
-      </Navigation>
-      <section>
-        <Header>
-          <h1>Build Your Own Pizza</h1>
-          <Image>
-            <img src = {Picture} alt = ''/>
-          </Image>
-          {/* <Route path ='/'> */}
-            <h2> Everyday Special Pizza</h2>
-          {/* </Route> */}
-        </Header>
-        <PizzaOrderForm   values= {formValues}
-                          onInputChange={onInputChange}
-                          onCheckboxChange={onCheckboxChange}
-                          onSubmit={onSubmit}
-                          disabled={formDisabled}
-                          errors={formErrors}
-        />
-        {/* <div>
-          {orders.map((order) => {
-            return (
-              <div>
-                <h4>Name:{order.name}</h4>
-                <p>Sauce : {order.originalRed}</p>
-                <p>Size: {order.pizzaSize}</p>
-                <p>special Instruction: {order.specialInstruction}</p>
-              </div>
-            )}
-          )}
-        </div> */}
-      </section>
+      <Router>
+      
+        <Navigation>
+          <h2 className = 'lambda'> LAMBDA EATS</h2> 
+          <NavBar>
+            <Link to='/'>
+              <span>Home</span>
+            </Link> 
+            <Link to='/pizza'>
+              <span>Order</span>
+            </Link>
+          </NavBar>
+        </Navigation>
+        <section>
+        <Route path exact = '/'>
+          <Header>
+            <h1>Build Your Own Pizza</h1>
+            <Image>
+              <img src = {Picture} alt = ''/>
+            </Image>
+            {/* <Route path ='/'> */}
+              <h2> Everyday Special Pizza</h2>
+            {/* </Route> */}
+          </Header>
+        </Route> 
+        <Route path = '/pizza'>
+          <div>
+            <PizzaOrderForm values= {formValues}
+                            onInputChange={onInputChange}
+                            onCheckboxChange={onCheckboxChange}
+                            onSubmit={onSubmit}
+                            disabled={formDisabled}
+                            errors={formErrors}
+            />        
+          </div> 
+        </Route> 
+        </section>
+     
+      </Router>
     </MainContainer>
   );
 };
