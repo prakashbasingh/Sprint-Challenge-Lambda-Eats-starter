@@ -1,4 +1,22 @@
 import React from 'react';
+import styled from 'styled-components'
+
+const FormContainer = styled.form`
+margin: 2rem;
+padding: 2rem;
+box-shadow: 0 0 9px 5px gray;
+background-color: silver;
+`
+const ToppingsContainer = styled.div`
+display: flex;
+`
+const TextContainer = styled.div`
+margin: 5px;
+`
+const ErrorMessage = styled.div`
+color: red;
+
+`
 
 const PizzaOrderForm = (props) => {
     const {
@@ -11,45 +29,11 @@ const PizzaOrderForm = (props) => {
     }= props
     
     return (
-        <form className = 'orderContainer'>
-            <div className="errors">
-                {errors.name},
-                {errors.pizzaSize},
-                {/* {errors.originalRed},
-                {errors.garlicRanch},
-                {errors.bbqSauce},
-                {errors.spinachAlfredo},
-                {errors.pepperoni},
-                {errors.sausage},
-                {errors.canadianBacon},
-                {errors.spicyItalianSausage},
-                {errors.grilledChicken},
-                {errors.onions},
-                {errors.greenPepper},
-                {errors.dicedTomato},
-                {errors.blackOlives},
-                {errors.roastedGarlic},
-                {errors.artichokeHeart},
-                {errors.threeCheese},
-                {errors.pineapple},
-                {errors.extraCheese},
-                {errors.glutenFreeCrust},
-                {errors.specialInstruction} */}
-            </div>
-
-          {/* ///////////text input///// */}
-
-                <label>Name:</label>
-                <input value={values.name}
-                onChange={onInputChange}
-                name='name'
-                type='text'/>
-
+        <FormContainer>
           {/* ///// DROPDOWN ///// */}
-
             <div className = 'pizzaSize'>
                 <h3>Choice of Size</h3>
-                <h4>Required</h4>
+                <ErrorMessage>{errors.pizzaSize}</ErrorMessage>
                 <label> <select  value={values.pizzaSize}
                                 onChange={onInputChange}
                                 name='pizzaSize' >
@@ -63,129 +47,131 @@ const PizzaOrderForm = (props) => {
             {/* ///// CHECKBOXES ///// */}
             <div>
                 <h3>Choice of Sauce</h3> 
-                <h4>Required</h4>
                 <label>Original Red</label>
-                    <input // checked={values.choiceOfSauce.originalRed}
+                    <input checked={values.checkBox.originalRed}
                     onChange={onCheckboxChange}
                     name='originalRed'
                     type="checkbox" /> 
                 <label>Garlic Ranch </label>
-                    <input  // checked={values.choiceOfSauce.garlicRanch}
+                    <input  checked={values.checkBox.garlicRanch}
                     onChange={onCheckboxChange}
                     name='garlicRanch'
                     type="checkbox" />
                 <label>BBQ Sauce</label>
-                    <input // checked={values.choiceOfSauce.bbqSauce}
+                    <input checked={values.checkBox.bbqSauce}
                     onChange={onCheckboxChange}
                     name='bbqSauce'
                     type="checkbox" /> 
                 <label>Spinach Alfredo</label>
-                    <input // checked={values.choiceOfSauce.spinachAlfredo}
+                    <input checked={values.checkBox.spinachAlfredo}
                     onChange={onCheckboxChange}
                     name='spinachAlfredo'
                     type="checkbox" /> 
             </div>
-            <div>
-            
+            <h3>Add Toppings</h3> <h4>Choose up to 10</h4> 
+            <ToppingsContainer>
                 <div>
-                    <h3>Add Toppings</h3> <h4>Choose up to 10</h4> 
-                    <label>Pepperoni</label>
-                        <input // checked={values.addToppings.pepperoni}
+                    <div><label>Pepperoni</label>
+                        <input checked={values.checkBox.pepperoni}
                         onChange={onCheckboxChange}
                         name='pepperoni'
-                        type="checkbox" /> 
-                    <label>Sausage</label>
-                        <input // checked={values.addToppings.sausage}
+                        type="checkbox" /> </div>
+                   <div><label>Sausage</label>
+                        <input checked={values.checkBox.sausage}
                         onChange={onCheckboxChange}
                         name='sausage'
-                        type="checkbox" />
-                    <label>Canadian Bacon </label>
-                        <input // checked={values.addToppings.canadianBacon}
+                        type="checkbox" /></div>
+                   <div><label>Canadian Bacon </label>
+                        <input checked={values.checkBox.canadianBacon}
                         onChange={onCheckboxChange}
                         name='canadianBacon'
-                        type="checkbox" /> 
-                    <label>Spicy Italian Sausage </label>
-                        <input // checked={values.addToppings.spicyItalianSausage}
+                        type="checkbox" /></div> 
+                    <div><label>Spicy Italian Sausage </label>
+                        <input checked={values.checkBox.spicyItalianSausage}
                         onChange={onCheckboxChange}
                         name='spicyItalianSausage'
-                        type="checkbox" /> 
-                    <label>Grilled chicken</label>
-                        <input // checked={values.addToppings.grilledChicken}
+                        type="checkbox" /></div> 
+                    <div><label>Grilled chicken</label>
+                        <input checked={values.checkBox.grilledChicken}
                         onChange={onCheckboxChange}
                         name='grilledChicken'
-                        type="checkbox" /> 
-                    <label>Onions </label>
-                        <input  // checked={values.addToppings.onions}
+                        type="checkbox" /></div> 
+                    <div><label>Onions </label>
+                        <input  checked={values.checkBox.onions}
                         onChange={onCheckboxChange}
                         name='onions'
-                        type="checkbox" /> 
-                    <label> Green Pepper</label>
-                        <input // checked={values.addToppings.greenPepper}
+                        type="checkbox" /></div> 
+                    <div><label> Green Pepper</label>
+                        <input checked={values.checkBox.greenPepper}
                         onChange={onCheckboxChange}
                         name='greenPepper'
-                        type="checkbox" />
+                        type="checkbox" /></div>
                 </div> 
 
                 <div>
-                    <label>Diced Tomato</label>
-                        <input // checked={values.addToppings.dicedTomato}
+                <div><label>Diced Tomato</label>
+                        <input checked={values.checkBox.dicedTomato}
                         onChange={onCheckboxChange}
                         name='dicedTomato'
-                        type="checkbox" />
-                    <label>Black Olives </label>
-                        <input // checked={values.addToppings.blackOlives}
+                        type="checkbox" /></div>
+                    <div><label>Black Olives </label>
+                        <input checked={values.checkBox.blackOlives}
                         onChange={onCheckboxChange}
                         name='blackOlives'
-                        type="checkbox" /> 
-                    <label>Roasted Garlic</label>
-                        <input // checked={values.addToppings.roastedGarlic}
+                        type="checkbox" /></div> 
+                    <div><label>Roasted Garlic</label>
+                        <input checked={values.checkBox.roastedGarlic}
                         onChange={onCheckboxChange}
                         name='roastedGarlic'
-                        type="checkbox" /> 
-                    <label>Artichoke Heart </label>
-                        <input // checked={values.addToppings.artichokeHeart}
+                        type="checkbox" /></div> 
+                    <div><label>Artichoke Heart </label>
+                        <input checked={values.checkBox.artichokeHeart}
                         onChange={onCheckboxChange}
                         name='artichokeHeart'
-                        type="checkbox" /> 
-                    <label>Three Cheese</label>
-                        <input // checked={values.addToppings.threeCheese}
+                        type="checkbox" /></div> 
+                    <div><label>Three Cheese</label>
+                        <input checked={values.checkBox.threeCheese}
                         onChange={onCheckboxChange}
                         name='threeCheese'
-                        type="checkbox" /> 
-                    <label>Pineapple</label>
-                        <input // checked={values.addToppings.pineapple}
+                        type="checkbox" /></div> 
+                    <div><label>Pineapple</label>
+                        <input checked={values.checkBox.pineapple}
                         onChange={onCheckboxChange}
                         name='pineapple'
-                        type="checkbox" /> 
-                    <label> Extra Cheese</label>
-                        <input // checked={values.addToppings.extraCheese}
+                        type="checkbox" /> </div>
+                    <div><label> Extra Cheese</label>
+                        <input checked={values.checkBox.extraCheese}
                         onChange={onCheckboxChange}
                         name='extraCheese'
-                        type="checkbox" />
+                        type="checkbox" /></div>
                 </div> 
-            </div>
+            </ToppingsContainer>
             <div>
-                <h3>Choice of Substitute</h3> <h4>Choose up to 1</h4>
+                <h3>Choice of Substitute</h3> 
                 <label>Gluten Free Crust (+$ 1.00)</label>
                     <input // checked={values.substitute.glutenFreeCrust}
                         onChange={onCheckboxChange}
                         name='glutenFreeCrust'
                         type="checkbox" /> 
             </div> 
-            
-                    {/* TEXT INPUTS  */}
-            <div>
-                <label>Special Instruction</label>
-                    <input value={values.specialInstruction}
-                        onChange={onInputChange}
-                        name='specialInstruction'
-                        type='text'/> 
-            </div>
+                       {/* TEXT INPUTS  */}
+            <TextContainer>           
+                <div><label>Special Instruction</label><ErrorMessage>{errors.specialInstruction}</ErrorMessage>
+                        <input value={values.specialInstruction}
+                            onChange={onInputChange}
+                            name='specialInstruction'
+                            type='text'/></div> 
+                <div><label>Name:</label></div><ErrorMessage>{errors.name}</ErrorMessage>
+                        <input value={values.name}
+                            onChange={onInputChange}
+                            name='name'
+                            type='text'/>
+            </TextContainer> 
             {/* the following is for button which needs a handler */}
             <div>
                 <button onClick={onSubmit} disabled={disabled}> Add to Order</button>
             </div>
-        </form>
+        </FormContainer>
     
     )
 

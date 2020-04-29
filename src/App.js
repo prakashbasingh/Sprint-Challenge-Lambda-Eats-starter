@@ -1,19 +1,53 @@
-
-
-
 import React, { useState, useEffect } from 'react';
 import {BrowserRouter , Route,  Link } from "react-router-dom";
-
 import axios from 'axios'
 import * as yup from 'yup'
-
+import styled from 'styled-components'
+ 
 import PizzaOrderForm from './PizzaOrderForm'
  
-
-
+const Picture =  'https://lh3.googleusercontent.com/proxy/v7uvo0YPnpbLZcd9Mk6RKoIkmCkgRE608bawLw-EEON9cPwEuOIz6Yy7WiSLeZJIfI7UDEWI3Ts2qh4MKyFPMZQg03hVZlNGYA' 
 
 //url for GET and POST
-const url ='https://reqres.in'
+const url = 'http://localhost:4000/orders'
+
+const MainContainer = styled.div`
+background-color: lightgray;
+/* margin: 10rem; */
+margin: 5rem;
+display: flex;
+flex-direction: column;
+justify-content: center;
+box-shadow: inset 0 0 20px black;
+
+`
+const Navigation = styled.div`
+background-color: black;
+color: white;
+display: flex;
+justify-content: flex-start;
+justify-content: space-around;
+`
+const NavBar = styled.nav`
+width: 10rem;
+font-size: 1.4rem;
+font-weight: bold;
+display: flex;
+justify-content: space-around;
+align-items: center;
+`
+const Image = styled.div`
+text-align: center;
+width:100%;
+`
+const Header = styled.div`
+display: flex;
+flex-direction: column;
+align-content: space-around;
+text-align: center;
+background-color: grey;
+box-shadow: inset 0 0 40px black;
+`
 
 //initial state of form
 const initialFormValues = {
@@ -22,87 +56,53 @@ const initialFormValues = {
     ///// DROPDOWN /////
     pizzaSize: '',
     ///// CHECKBOXES /////
-     originalRed: false,
-     garlicRanch: false,
-     bbqSauce: false,
-     spinachAlfredo: false,
-     pepperoni: false,
-     sausage: false,
-     canadianBacon: false,
-     spicyItalianSausage: false,
-     grilledChicken: false,
-     onions: false,
-     greenPepper: false,
-     dicedTomato: false,
-     blackOlives: false,
-     roastedGarlic: false,
-     artichokeHeart: false,
-     threeCheese: false,
-     pineapple: false,
-     extraCheese: false,
-     glutenFreeCrust: false,
+    checkBox: {
+      originalRed: false,
+      garlicRanch: false,
+      bbqSauce: false,
+      spinachAlfredo: false,
+      pepperoni: false,
+      sausage: false,
+      canadianBacon: false,
+      spicyItalianSausage: false,
+      grilledChicken: false,
+      onions: false,
+      greenPepper: false,
+      dicedTomato: false,
+      blackOlives: false,
+      roastedGarlic: false,
+      artichokeHeart: false,
+      threeCheese: false,
+      pineapple: false,
+      extraCheese: false,
+    },
+    glutenFreeCrust: false,
     ///// TEXT INPUTS /////
      specialInstruction: '',
   }
 
   //for validation errors object
   const initialFormErrors = {
-    name: '',
-    pizzaSize: '',
-     originalRed: '',
-     garlicRanch: '',
-     bbqSauce: '',
-     spinachAlfredo: '',
-     pepperoni: '',
-     sausage: '',
-     canadianBacon: '',
-     spicyItalianSausage: '',
-     grilledChicken: '',
-     onions: '',
-     greenPepper: '',
-     dicedTomato: '',
-     blackOlives: '',
-     roastedGarlic: '',
-     artichokeHeart: '',
-     threeCheese: '',
-     pineapple: '',
-     extraCheese: '',
-     glutenFreeCrust: '',
+     name: '',
+     pizzaSize: '',
      specialInstruction: '',
   }
-
 
 //creating schema for validation
 const formSchema = yup.object().shape({
   name: yup
         .string()
-        .min(2, 'Name must have at least 2 character in length')
+        .min(3, 'Name must have at least 3 character in length')
         .required('Name is required'),
   pizzaSize: yup
-    .string(),
-    originalRed: yup.string(),
-    garlicRanch: yup.string(),
-    bbqSauce: yup.string(),
-    spinachAlfredo: yup.string(),
-    pepperoni: yup.string(),
-    sausage: yup.string(),
-    canadianBacon: yup.string(),
-    spicyItalianSausage: yup.string(),
-    grilledChicken: yup.string(),
-    onions: yup.string(),
-    greenPepper: yup.string(),
-    dicedTomato: yup.string(),
-    blackOlives: yup.string(),
-    roastedGarlic: yup.string(),
-    artichokeHeart: yup.string(),
-    threeCheese: yup.string(),
-    pineapple: yup.string(),
-    extraCheese: yup.string(),
-    glutenFreeCrust: yup.string(),
-    specialInstruction: yup.string(),
-  
+    .string()
+    // .matches(/(Large|Medium|Small)/, 'either Large or Medium or Small ')
+    .required('Please Select One'),
+    specialInstruction: yup
+      .string()
+      .min(3, 'special Instruction must have at least 3 character in length')
+      // .required('special Instruction is required'),
 })
-  
 
 const App = () => {
  const [orders, setOrders] = useState([])
@@ -113,69 +113,42 @@ const App = () => {
  //state to track validation errors
  const [formErrors, setFormErrors] = useState(initialFormErrors)
 
+ const getOrders = () => {
+  // getting FRIENDS data  FROM THE API! and set them in state
+  axios.get(url)
+    .then(res => {
+      setOrders(res.data)
+    })
+    .catch(err => {
+      // debugger
+    })
+}
+
+useEffect(() => {
+  // AFTER THE FIRST DOM SURGERY WE NEED FRIENDS FROM API!
+  getOrders()
+}, [])
  
- const onInputChange = (event) => {
-  const name = (event).target.name
-  const value = (event).target.value
+  //to post new order to the API  const postOrder = order =>
+const postOrder = order => {
+  axios.post(url, order)
+  .then (success => {
+    setOrders([...orders, success.data])
+    console.log(success.data, 'got the data....???????')
+  debugger
+  })
+  .catch(error => {
+    console.log(error, 'qqqqqqqqqqQQQQQQ???')
+  })
+} 
 
-  //  IF THE FORM VALUES CHANGE, WE NEED TO RUN VALIDATION
-  // and update the form errors slice of state (so the form can display errors)
-  yup
-    .reach(formSchema, name)
-    .validate(value)
-    .then(() => {
-    return setFormErrors({
-        ...formErrors,
-        [name]: '',
-      })
-    })
-    .catch(error => {
-      
-      // SETting  THE ERROR IN THE RIGHT PLACE
-      setFormErrors({
-        ...formErrors,
-        [name]: error.errors[0]
-      })
-    })
-
-  setFormValues({
-    ...formValues,
-    [name]: value,
-  });
-};
-
- // to run validation if form value vhanges
- useEffect(() => {
+ // to run validation if form value changes
+useEffect(() => {
   formSchema.isValid(formValues)
     .then((valid) => {
       setFormDisabled(!valid)
     });
   }, [formValues]);
-
-const onCheckboxChange = (event) => {
-  const { name } = event.target.name
-    const isChecked = event.target.checked
-
-    setFormValues({
-      ...formValues,
-      pizzaSize: {
-        ...formValues.pizzaSize,
-        [name]: isChecked,
-      }
-    })
-  }
-  const postOrder = order =>
-  axios.post(url, order)
-  .then (success => {
-    setOrders([success.data, ...orders])
-    console.log(success.data, 'go the data....???????')
-  
-  })
-  .catch(error => {
-    console.log(error, 'qqqqqqqqqqQQQQQQ???')
-  })
-
-  
 
   const onSubmit = (event) => {
     event.preventDefault()
@@ -183,64 +156,74 @@ const onCheckboxChange = (event) => {
     const newOrder = {
      name: formValues.name,
      pizzaSize: formValues.pizzaSize,
-     originalRed: formValues.originalRed,
-     garlicRanch: formValues.garlicRanch,
-     bbqSauce: formValues.bbqSauce,
-     spinachAlfredo: formValues.spinachAlfredo,
-     pepperoni: formValues.pepperoni,
-     sausage: formValues.sausage,
-     canadianBacon: formValues.canadianBacon,
-     spicyItalianSausage: formValues.spicyItalianSausage,
-     grilledChicken: formValues.grilledChicken,
-     onions: formValues.onions,
-     greenPepper: formValues.greenPepper,
-     dicedTomato: formValues.dicedTomato,
-     blackOlives: formValues.blackOlives,
-     roastedGarlic: formValues.roastedGarlic,
-     artichokeHeart: formValues.artichokeHeart,
-     threeCheese: formValues.threeCheese,
-     pineapple: formValues.pineapple,
-     extraCheese: formValues.extraCheese,
-     glutenFreeCrust: formValues.glutenFreeCrust,
-     specialInstruction: formValues.specialInstruction,
+     checkBox: Object.keys(formValues.checkBox)
+     .filter(sauceAndToppings => formValues.checkBox[sauceAndToppings] === true),
     }
     postOrder(newOrder);
     setFormValues(initialFormValues);
   }
 
+ const onInputChange = evt => {
+    const name = evt.target.name
+    const value = evt.target.value
 
-  //   const postOrder = (order) => {
-  //   setOrders([...orders, newOrder]);
-  // };
+    //  IF THE FORM VALUES CHANGE, WE NEED TO RUN VALIDATION
+    // and update the form errors slice of state (so the form can display errors)
+    yup
+      .reach(formSchema, name)
+      .validate(value)
+      .then(valid => {
+        setFormErrors({
+          ...formErrors,
+          [name]: '',
+        })
+      })
+      .catch(error => {
+        
+        // SETting  THE ERROR IN THE RIGHT PLACE
+        setFormErrors({
+          ...formErrors,
+          [name]: error.errors[0]
+        })
+      })
 
-  
-  
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+
+const onCheckboxChange = (event) => {
+  const { name } = event.target
+    const isChecked = event.target.checked
+
+    setFormValues({
+      ...formValues,
+      checkBox: {
+        ...formValues.checkBox,
+        [name]: isChecked,
+      }
+    })
+  }  
 
   return (
-    <div>
-      <header>
+    <MainContainer>
+      <Navigation>
         <h2 className = 'lambda'> LAMBDA EATS</h2> 
-        <nav>
-
-          <h4>Home</h4>
-          <h4>Order</h4>
-
-          {/* <Route path = '/'> */}
-            {/* <Link to= '/home'>Home</Link>
-            <Link to= '/pizza'>Order</Link> */}
-          {/* </Route> */}
-        </nav>
-      </header>
+        <NavBar>
+          <span>Home</span> <span>Order</span>
+        </NavBar>
+      </Navigation>
       <section>
-        <div>
+        <Header>
           <h1>Build Your Own Pizza</h1>
-          <div>
-            <img src = {'https://lh3.googleusercontent.com/proxy/zhd0DtEo2F3PVCN2KahAoNhU4QRkHN87tVYR8CQkbGI9ta96SQM9l6E21CLPslSUA1bo3QIopeW-kV-LHiaA_xuzt8dvBYMamQ'} alt = ''/>
-          </div>
+          <Image>
+            <img src = {Picture} alt = ''/>
+          </Image>
           {/* <Route path ='/'> */}
             <h2> Everyday Special Pizza</h2>
           {/* </Route> */}
-        </div>
+        </Header>
         <PizzaOrderForm   values= {formValues}
                           onInputChange={onInputChange}
                           onCheckboxChange={onCheckboxChange}
@@ -248,7 +231,7 @@ const onCheckboxChange = (event) => {
                           disabled={formDisabled}
                           errors={formErrors}
         />
-        <div>
+        {/* <div>
           {orders.map((order) => {
             return (
               <div>
@@ -259,9 +242,9 @@ const onCheckboxChange = (event) => {
               </div>
             )}
           )}
-        </div>
+        </div> */}
       </section>
-    </div>
+    </MainContainer>
   );
 };
 export default App;
