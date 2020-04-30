@@ -9,7 +9,7 @@ import PizzaOrderForm from './PizzaOrderForm'
 const Picture =  'https://lh3.googleusercontent.com/proxy/v7uvo0YPnpbLZcd9Mk6RKoIkmCkgRE608bawLw-EEON9cPwEuOIz6Yy7WiSLeZJIfI7UDEWI3Ts2qh4MKyFPMZQg03hVZlNGYA' 
 
 //url for GET and POST
-const url = 'http://localhost:4000/orders'
+const url = 'https://reqres.in/api/users'
 
 const MainContainer = styled.div`
 background-color: lightgray;
@@ -75,8 +75,8 @@ const initialFormValues = {
       threeCheese: false,
       pineapple: false,
       extraCheese: false,
-    },
-    glutenFreeCrust: false,
+      glutenFreeCrust: false,
+        },
     ///// TEXT INPUTS /////
      specialInstruction: '',
   }
@@ -106,35 +106,21 @@ const formSchema = yup.object().shape({
 
 const App = () => {
  const [orders, setOrders] = useState([])
-//  console.log(orders, 'wwwwwwwwwwwwwwwwwwwwwwwwwww?')
+ console.log(orders, 'wwwwwwwwwwwwwwwwwwwwwwwwwww?')
  const [formValues, setFormValues] = useState (initialFormValues)
  //to track submitt button is disabled or not
  const[formDisabled, setFormDisabled] = useState(true)
  //state to track validation errors
  const [formErrors, setFormErrors] = useState(initialFormErrors)
 
- const getOrders = () => {
-  // getting FRIENDS data  FROM THE API! and set them in state
-  axios.get(url)
-    .then(res => {
-      setOrders(res.data)
-    })
-    .catch(err => {
-      // debugger
-    })
-}
 
-useEffect(() => {
-  // AFTER THE FIRST DOM SURGERY WE NEED FRIENDS FROM API!
-  getOrders()
-}, [])
  
   //to post new order to the API  const postOrder = order =>
 const postOrder = order => {
   axios.post(url, order)
   .then (success => {
     setOrders([...orders, success.data])
-    console.log(success.data, 'got the data....???????')
+    console.log(success, 'got the data....???????')
   debugger
   })
   .catch(error => {
@@ -222,7 +208,7 @@ const onCheckboxChange = (event) => {
           </NavBar>
         </Navigation>
         <section>
-        <Route path exact = '/'>
+        <Route exact path = '/'>
           <Header>
             <h1>Build Your Own Pizza</h1>
             <Image>

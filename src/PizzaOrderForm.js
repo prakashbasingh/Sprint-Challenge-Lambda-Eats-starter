@@ -33,7 +33,7 @@ const PizzaOrderForm = (props) => {
           {/* ///// DROPDOWN ///// */}
             <div className = 'pizzaSize'>
                 <h3>Choice of Size</h3>
-                <ErrorMessage>{errors.pizzaSize}</ErrorMessage>
+                {/* <ErrorMessage>{errors.pizzaSize}</ErrorMessage> */}
                 <label> <select  value={values.pizzaSize}
                                 onChange={onInputChange}
                                 name='pizzaSize' >
@@ -149,7 +149,7 @@ const PizzaOrderForm = (props) => {
             <div>
                 <h3>Choice of Substitute</h3> 
                 <label>Gluten Free Crust (+$ 1.00)</label>
-                    <input // checked={values.substitute.glutenFreeCrust}
+                    <input checked={values.checkBox.glutenFreeCrust}
                         onChange={onCheckboxChange}
                         name='glutenFreeCrust'
                         type="checkbox" /> 
